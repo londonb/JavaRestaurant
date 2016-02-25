@@ -1,12 +1,15 @@
 import org.sql2o.*;
 import java.util.List;
+import java.util.*;
 
 public class Restaurant {
   private int id;
   private String name;
+  private  int cuisine_id;
 
-  public Restaurant (String name) {
+  public Restaurant (String name, int cuisine_id) {
     this.name = name;
+    this.cuisine_id=cuisine_id;
   }
   //
   public int getId() {
@@ -17,6 +20,9 @@ public class Restaurant {
     return name;
   }
 
+  public int cuisine_id() {
+    return cuisine_id;
+  }
   @Override
   public boolean equals(Object otherRestaurant){
     if (!(otherRestaurant instanceof Restaurant)) {
@@ -30,9 +36,9 @@ public class Restaurant {
 //
   //CREATE
   public void save() {
-    String sql = "INSERT INTO restaurants (name) VALUES (:name)";
+    String sql = "INSERT INTO restaurants (name, cuisine_id) VALUES (:name, :cuisine_id)";
     try (Connection con = DB.sql2o.open()) {
-      this.id = (int) con.createQuery(sql, true).addParameter("name", name).executeUpdate().getKey();
+      this.id = (int) con.createQuery(sql, true).addParameter("name", name).addParameter("cuisine_id", cuisine_id).executeUpdate().getKey();
       /******************************************************
         Students: TODO: Display all restaurants on main page
       *******************************************************/
@@ -46,6 +52,7 @@ public class Restaurant {
       return con.createQuery(sql).executeAndFetch(Restaurant.class);
     }
   }
+
 //
   //UPDATE
   public void update(String newName) {

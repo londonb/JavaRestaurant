@@ -15,14 +15,14 @@ public class RestaurantTest {
   }
   @Test
   public void equals_returnsTrueIfRestaurantsAretheSame() {
-    Restaurant firstRestaurant = new Restaurant ("Lardo");
-    Restaurant secondRestaurant = new Restaurant ("Lardo");
+    Restaurant firstRestaurant = new Restaurant ("Lardo", 1);
+    Restaurant secondRestaurant = new Restaurant ("Lardo", 1);
     assertTrue(firstRestaurant.equals(secondRestaurant));
   }
 
   @Test
   public void save_savesRestaurantToDatabase() {
-    Restaurant newRestaurant = new Restaurant("Lardo");
+    Restaurant newRestaurant = new Restaurant("Lardo", 1);
     newRestaurant.save();
     assertTrue(Restaurant.all().get(0).equals(newRestaurant));
   }
@@ -30,7 +30,7 @@ public class RestaurantTest {
 
   @Test
   public void find_findsRestaurantInDatabase_true() {
-    Restaurant newRestaurant = new Restaurant("Lardo");
+    Restaurant newRestaurant = new Restaurant("Lardo", 1);
     newRestaurant.save();
     Restaurant savedRestaurant = Restaurant.find(newRestaurant.getId());
     assertEquals(savedRestaurant.getName(), "Lardo");
@@ -38,7 +38,7 @@ public class RestaurantTest {
 
   @Test
   public void update_updatesRestaurantInDatabased() {
-    Restaurant newRestaurant = new Restaurant("Lrdo");
+    Restaurant newRestaurant = new Restaurant("Lrdo", 1);
     newRestaurant.save();
     newRestaurant.update("Lardo");
     assertEquals(newRestaurant.getName(), "Lardo");
@@ -46,21 +46,9 @@ public class RestaurantTest {
 
   @Test
   public void delete_deletesRestaurantFromDatabase() {
-    Restaurant myRestaurant = new Restaurant ("Lardo");
+    Restaurant myRestaurant = new Restaurant ("Lardo", 1);
     myRestaurant.save();
     myRestaurant.delete();
     assertEquals(Restaurant.all().size(), 0);
-  }
-
-  @Test
-  public void addCuisine_addsCuisinesToRestaurant() {
-    Restaurant myRestaurant = new Restaurant ("Lardo");
-    myRestaurant.save();
-    Cuisine newCuisine = new Cuisine ("American", myRestaurant.getId());
-    Cuisine newCuisine2 = new Cuisine ("Mexican", myRestaurant.getId());
-    newCuisine.save();
-    newCuisine2.save();
-    Cuisine[] cuisine = new Cuisine[] { newCuisine , newCuisine2};
-    assertTrue(myRestaurant.addCuisine().containsAll(Arrays.asList(cuisine)));
   }
 }
